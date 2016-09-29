@@ -6,6 +6,7 @@ defmodule Prism.Type do
 
   defmodule Field do
     @moduledoc false
+    @enforce_keys [:type]
     defstruct type: nil, fields: %{}
   end
 

@@ -3,6 +3,55 @@ defmodule TypeTest do
   alias Prism.Type
   doctest Prism.Type
 
+  describe "__using__" do
+    defmodule Type1 do
+      use Prism.Type, schema: ~S"""
+      {
+        "Main" : {
+          "uid" : {
+            "type" : "UID",
+            "fieldset" : "UID"
+          },
+          "title" : {
+            "type" : "Text"
+          }
+        }
+      }
+      """
+    end
+    test "struct is defined" do
+      assert %Type1{} == %Type1{ uid: nil, title: nil }
+    end
+
+    defmodule Type2 do
+      use Prism.Type, schema: ~S"""
+      {
+        "Main" : {
+          "unique-id" : {
+            "type" : "UID",
+            "fieldset" : "UID"
+          },
+          "events" : {
+            "type" : "Group",
+            "fieldset" : "Community Events",
+            "config" : {
+              "fields" : {
+                "level": {
+                  "type" : "Text"
+                }
+              }
+            }
+          }
+        }
+      }
+      """
+    end
+    test "structs are defined for nested fields" do
+      assert %Type2{} == %Type2{ "unique-id": nil, events: nil }
+      assert %Type2.Events{} == %Type2.Events{ level: nil }
+    end
+  end
+
   describe "schema_fields/1" do
     test "invalid JSON errors" do
       schema = ~S"""

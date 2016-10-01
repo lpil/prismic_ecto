@@ -12,17 +12,20 @@ defmodule PrismicEcto do
   # Worker processes
   #
 
+  @doc false
   def child_spec(_repo, _opts) do
     # TODO: Add client process pooling.
     Supervisor.Spec.worker(Client.Worker, [])
   end
 
+  @doc false
   def ensure_all_started(_repo, _type) do
     {:ok, []}
   end
 
 
   # Executes a previously prepared query
+  @doc false
   def execute(repo, query_meta, query, params, arg4, options) do
     IO.inspect repo
     IO.inspect query_meta
@@ -36,11 +39,13 @@ defmodule PrismicEcto do
   end
 
   # Commands invoked to prepare a query for all.
-  def prepare(atom, query) do
-    IO.inspect atom
+  @doc false
+  def prepare(:all, query) do
     IO.inspect query
     {:no_cache, :ok}
   end
+  def prepare(_execution_type, _query),
+    do: raise PrismicEcto.WriteError
 
 
   #
@@ -48,10 +53,12 @@ defmodule PrismicEcto do
   # Our code requires no special type conversions.
   #
 
+  @doc false
   def dumpers(primitive_type, _ecto_type) do
     [primitive_type]
   end
 
+  @doc false
   def loaders(primitive_type, _ecto_type) do
     [primitive_type]
   end
@@ -61,6 +68,7 @@ defmodule PrismicEcto do
   # Callback invoked in case the adapter needs to inject code
   #
 
+  @doc false
   defmacro __before_compile__(_env),
     do: []
 

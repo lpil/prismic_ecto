@@ -1,7 +1,7 @@
-Prism
-=====
+Prismic Ecto
+============
 
-A small Prismic.io client.
+An Ecto adapter for the Prismic.io CMS API.
 
 ## Notes
 

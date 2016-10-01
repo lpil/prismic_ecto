@@ -1,8 +1,8 @@
-defmodule Prism.Mixfile do
+defmodule PrismicEcto.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :prism,
+    [app: :prismic_ecto,
      version: "0.1.0",
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
@@ -11,11 +11,13 @@ defmodule Prism.Mixfile do
   end
 
   def application do
-    [applications: [:logger, :poison]]
+    [applications: [:logger]]
   end
 
   defp deps do
     [
+      # Datastore querying DSL
+      {:ecto, "~> 2.0"},
       # JSON parser
       {:poison, "~> 2.2"},
 

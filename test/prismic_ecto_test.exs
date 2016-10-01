@@ -1,6 +1,6 @@
-defmodule PrismTest do
+defmodule PrismicEctoTest do
   use ExUnit.Case
-  doctest Prism
+  doctest PrismicEcto
 
   test "the truth" do
     assert 1 + 1 == 2

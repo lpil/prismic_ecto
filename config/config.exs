@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure for your application as:
 #
-#     config :prism, key: :value
+#     config :prismic_ecto, key: :value
 #
 # And access this configuration in your application as:
 #
-#     Application.get_env(:prism, :key)
+#     Application.get_env(:prismic_ecto, :key)
 #
 # Or configure a 3rd-party app:
 #

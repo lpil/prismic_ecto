@@ -43,10 +43,16 @@ defmodule Prismic.Ecto.Query do
     %{ expr:
       {:==, _, [
         _lhs = {{:., _, [{:&, _, _}, field]}, _, _},
-        rhs = %{ value: _ }
+        rhs
       ]} }
   ) do
-    ~s{:#{letter(query)} = at(document.#{field}, #{value(rhs.value)})}
+    field_value = case rhs do
+      value when is_binary(value) ->
+        value
+      %{ value: value } ->
+        value
+    end
+    ~s{:#{letter(query)} = at(document.#{field}, #{value(field_value)})}
   end
   defp where_pred(
     query,

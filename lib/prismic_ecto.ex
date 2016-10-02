@@ -3,10 +3,9 @@ defmodule Prismic.Ecto do
   An Ecto adapter for the Prismic.io CMS API.
   """
 
-  alias __MODULE__.Client
+  alias Prismic.Ecto.Query
 
   @behaviour Ecto.Adapter
-
 
   #
   # Worker processes
@@ -15,7 +14,7 @@ defmodule Prismic.Ecto do
   @doc false
   def child_spec(_repo, _opts) do
     # TODO: Add client process pooling.
-    Supervisor.Spec.worker(Client.Worker, [])
+    Supervisor.Spec.worker(Prismic.Ecto.Worker, [])
   end
 
   @doc false
@@ -27,12 +26,17 @@ defmodule Prismic.Ecto do
   # Executes a previously prepared query
   @doc false
   def execute(repo, query_meta, query, params, arg4, options) do
-    IO.inspect repo
-    IO.inspect query_meta
-    IO.inspect query
-    IO.inspect params
-    IO.inspect arg4
-    IO.inspect options
+    IO.puts """
+    ============================
+    Inside Prismic.Ecto.execute/6
+      repo: #{inspect repo}
+      query_meta: #{inspect query_meta}
+      query: #{inspect query}
+      params: #{inspect params}
+      arg4: #{inspect arg4}
+      options: #{inspect options}
+    ============================
+    """
     entries_count = 1
     items = []
     {entries_count, items}
@@ -41,22 +45,22 @@ defmodule Prismic.Ecto do
   # Commands invoked to prepare a query for all.
   @doc false
   def prepare(:all, query) do
-    IO.inspect query
-    {:no_cache, :ok}
+    {:nocache, Query.build(query)}
   end
-  def prepare(_execution_type, _query),
-    do: raise Prismic.Ecto.WriteError
+  def prepare(_execution_type, _query) do
+    raise Prismic.Ecto.WriteError
+  end
 
 
   #
   # Type conversion
-  # Our code requires no special type conversions.
   #
 
   @doc false
-  def dumpers(primitive_type, _ecto_type) do
-    [primitive_type]
-  end
+  def dumpers(:id, ecto_type),
+    do: [&{:ok, &1}]
+  def dumpers(_primitive_type, ecto_type),
+    do: [ecto_type]
 
   @doc false
   def loaders(primitive_type, _ecto_type) do

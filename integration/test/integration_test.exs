@@ -4,10 +4,15 @@
 #
 
 defmodule IntegrationTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: false
   doctest Integration
 
+  import Ecto.Query
+  alias Integration.{Repo, Contributor}
+
   test "the truth" do
-    assert 1 + 1 == 2
+    Contributor
+    |> where(id: "UrkL8wEAAOFjpbUT")
+    |> Repo.all
   end
 end

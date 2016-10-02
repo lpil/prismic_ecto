@@ -1,7 +1,7 @@
 Prismic Ecto
 ============
 
-An Ecto adapter for the Prismic.io CMS API.
+An Ecto adapter for the Prismic.io CMS.
 
 ## Notes
 
@@ -10,3 +10,6 @@ second to perform the query. (sigh).
 
 1. `http://ACCOUNT-NAME.prismic.io/api`
 2. `http://ACCOUNT-NAME.prismic.io/api/documents/search?page=1&pageSize=20&ref=V-Ur-ysAACkAEy97`
+
+The "https://micro.prismic.io/api" Prismic repo is supposed to be
+stable and reliable.

@@ -1,4 +1,4 @@
-defmodule PrismicEcto.Mixfile do
+defmodule Prismic.Ecto.Mixfile do
   use Mix.Project
 
   def project do
@@ -7,7 +7,8 @@ defmodule PrismicEcto.Mixfile do
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     deps: deps()]
+     deps: deps(),
+     deps_path: "../deps"]
   end
 
   def application do

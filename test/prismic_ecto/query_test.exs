@@ -1,11 +1,11 @@
-defmodule PrismicEcto.QueryTest do
+defmodule Prismic.Ecto.QueryTest do
   use ExUnit.Case, async: true
-  doctest PrismicEcto.Query
+  doctest Prismic.Ecto.Query
   import Ecto.Query
 
   defmacro query ~> expected_preds do
     quote bind_quoted: [query: query, expected_preds: expected_preds] do
-      assert PrismicEcto.Query.build(query) == preds(expected_preds)
+      assert Prismic.Ecto.Query.build(query) == preds(expected_preds)
     end
   end
 
@@ -63,7 +63,6 @@ defmodule PrismicEcto.QueryTest do
      ~s{:p = any(document.name, ["Tim", "Alice"])},
    ]
   end
-
 
 
   defp preds(ps) do

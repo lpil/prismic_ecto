@@ -1,4 +1,4 @@
-defmodule PrismicEcto do
+defmodule Prismic.Ecto do
   @moduledoc """
   An Ecto adapter for the Prismic.io CMS API.
   """
@@ -45,7 +45,7 @@ defmodule PrismicEcto do
     {:no_cache, :ok}
   end
   def prepare(_execution_type, _query),
-    do: raise PrismicEcto.WriteError
+    do: raise Prismic.Ecto.WriteError
 
 
   #
@@ -78,21 +78,21 @@ defmodule PrismicEcto do
 
   @doc false
   def autogenerate(_field_type),
-    do: raise PrismicEcto.WriteError
+    do: raise Prismic.Ecto.WriteError
 
   @doc false
   def insert(_repo, _schema_meta, _fields, _returning, _options),
-    do: raise PrismicEcto.WriteError
+    do: raise Prismic.Ecto.WriteError
 
   @doc false
   def insert_all(_repo, _schema_meta, _header, _list, _returning, _options),
-    do: raise PrismicEcto.WriteError
+    do: raise Prismic.Ecto.WriteError
 
   @doc false
   def update(_repo, _schema_meta, _fields, _filters, _returning, _options),
-    do: raise PrismicEcto.WriteError
+    do: raise Prismic.Ecto.WriteError
 
   @doc false
   def delete(_repo, _schema_meta, _filters, _options),
-    do: raise PrismicEcto.WriteError
+    do: raise Prismic.Ecto.WriteError
 end

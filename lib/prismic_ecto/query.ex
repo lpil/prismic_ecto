@@ -1,4 +1,4 @@
-defmodule PrismicEcto.Query do
+defmodule Prismic.Ecto.Query do
   @moduledoc """
   Building Prismic.io queries from Ecto queries.
   """

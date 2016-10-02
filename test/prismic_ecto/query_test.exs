@@ -35,7 +35,7 @@ defmodule PrismicEcto.QueryTest do
     ]
   end
 
-  test "select id" do
+  test "where field ==" do
     Person
     |> where(id: 1337)
     ~> [
@@ -44,10 +44,30 @@ defmodule PrismicEcto.QueryTest do
    ]
   end
 
+  test "where multiple fields ==" do
+    Person
+    |> where(name: "Tim")
+    |> where(age: 50)
+    ~> [
+     ~s{:p = at(document.type, "person")},
+     ~s{:p = at(document.name, "Tim")},
+     ~s{:p = at(document.age, 50)},
+   ]
+  end
+
+  test "where field in collection" do
+    Person
+    |> where([p], p.name in ["Tim", "Alice"])
+    ~> [
+     ~s{:p = at(document.type, "person")},
+     ~s{:p = any(document.name, ["Tim", "Alice"])},
+   ]
+  end
+
 
 
   defp preds(ps) do
     wrap = &"[#{&1}]"
-    wrap.(ps |> Enum.map(wrap) |> Enum.join(""))
+    ps |> Enum.map(wrap) |> Enum.join("") |> wrap.()
   end
 end

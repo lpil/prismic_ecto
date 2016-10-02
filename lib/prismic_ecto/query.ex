@@ -38,6 +38,18 @@ defmodule PrismicEcto.Query do
     ~s{:#{letter(query)} = at(document.#{field}, #{value(rhs.value)})}
   end
 
+  defp where_pred(
+    query,
+    %{ expr:
+      {:in, _, [
+        _lhs = {{:., _, [{:&, _, _}, field]}, _, _},
+        rhs
+      ]} }
+  ) do
+    values = Enum.map(rhs, fn(v) -> v.value end)
+    ~s{:#{letter(query)} = any(document.#{field}, #{value(values)})}
+  end
+
 
   #
   # Helpers

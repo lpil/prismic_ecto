@@ -7,15 +7,26 @@ defmodule Prismic.Ecto.Query do
   Convert a Ecto query expression into Prismic.io predicate strings.
   """
   def build(%Ecto.Query{} = query) do
-    [document_pred(query) | wheres_preds(query)]
+    document_pred(query)
+    ++ wheres_preds(query)
     |> Enum.map(&wrap/1)
     |> Enum.join("")
     |> wrap()
   end
 
-  defp document_pred(query) do
-    {doc_type, _schema_mod} = query.from
-    ~s{:#{letter(query)} = at(document.type, #{value(doc_type)})}
+
+  #
+  # Document type clause
+  #
+
+  defp document_pred(%{ from: {_, Prismic.Ecto.AnyType}}) do
+    []
+  end
+  defp document_pred(%{ from: {"", _}}) do
+    []
+  end
+  defp document_pred(%{ from: {doc_type, _}} = query) do
+    [~s{:#{letter(query)} = at(document.type, #{value(doc_type)})}]
   end
 
 
@@ -37,7 +48,6 @@ defmodule Prismic.Ecto.Query do
   ) do
     ~s{:#{letter(query)} = at(document.#{field}, #{value(rhs.value)})}
   end
-
   defp where_pred(
     query,
     %{ expr:

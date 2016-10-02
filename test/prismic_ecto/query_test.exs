@@ -35,6 +35,11 @@ defmodule Prismic.Ecto.QueryTest do
     ]
   end
 
+  test "from anything" do
+    from("") ~> []
+    from(Prismic.Ecto.AnyType) ~> []
+  end
+
   test "where field ==" do
     Person
     |> where(id: 1337)

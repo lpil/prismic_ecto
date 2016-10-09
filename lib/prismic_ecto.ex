@@ -13,8 +13,7 @@ defmodule Prismic.Ecto do
 
   @doc false
   def child_spec(_repo, _opts) do
-    # TODO: Add client process pooling.
-    Supervisor.Spec.worker(Prismic.Ecto.Worker, [])
+    Supervisor.Spec.supervisor(Prismic.Ecto.Supervisor, [])
   end
 
   @doc false
@@ -38,7 +37,7 @@ defmodule Prismic.Ecto do
     ============================
     """
     entries_count = 1
-    items = []
+    items = Prismic.Ecto.WorkerManager.execute(query)
     {entries_count, items}
   end
 
@@ -57,7 +56,7 @@ defmodule Prismic.Ecto do
   #
 
   @doc false
-  def dumpers(:id, ecto_type),
+  def dumpers(:id, _ecto_type),
     do: [&{:ok, &1}]
   def dumpers(_primitive_type, ecto_type),
     do: [ecto_type]

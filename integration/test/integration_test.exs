@@ -14,5 +14,6 @@ defmodule IntegrationTest do
     Contributor
     |> where(id: "UrkL8wEAAOFjpbUT")
     |> Repo.all
+    |> IO.inspect
   end
 end

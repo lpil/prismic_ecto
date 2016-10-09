@@ -1,7 +1,7 @@
 defmodule Prismic.Ecto.Worker do
   @moduledoc false
   use GenServer
-  alias Prismic.Ecto.Request
+  alias Prismic.Ecto.{Request, Response}
 
   def start_link(%Request{} = request) do
     GenServer.start_link(__MODULE__, request)
@@ -29,6 +29,7 @@ defmodule Prismic.Ecto.Worker do
   end
 
   defp execute_query(_query) do
-    [[:ok]]
+    item = %{ color: "blue", location: "UK"}
+    %Response{ items: [[item]], count: 1}
   end
 end

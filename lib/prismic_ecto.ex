@@ -3,7 +3,7 @@ defmodule Prismic.Ecto do
   An Ecto adapter for the Prismic.io CMS API.
   """
 
-  alias Prismic.Ecto.Query
+  alias Prismic.Ecto.{Query, Response}
 
   @behaviour Ecto.Adapter
 
@@ -23,22 +23,22 @@ defmodule Prismic.Ecto do
 
 
   # Executes a previously prepared query
+  #
+  # Callback docs
+  # https://hexdocs.pm/ecto/Ecto.Adapter.html#c:execute/6
+  #
+  # Github Ecto example
+  # https://github.com/wojtekmach/github_ecto/blob/master/lib/github_ecto.ex#L35-L61
+  #
+  # Non-caching SQL example
+  # https://github.com/elixir-ecto/ecto/blob/v2.0.5/lib/ecto/adapters/sql.ex#L415-L420
+  #
   @doc false
-  def execute(repo, query_meta, query, params, arg4, options) do
-    IO.puts """
-    ============================
-    Inside Prismic.Ecto.execute/6
-      repo: #{inspect repo}
-      query_meta: #{inspect query_meta}
-      query: #{inspect query}
-      params: #{inspect params}
-      arg4: #{inspect arg4}
-      options: #{inspect options}
-    ============================
-    """
-    entries_count = 1
-    items = Prismic.Ecto.WorkerManager.execute(query)
-    {entries_count, items}
+  def execute(_repo, query_meta, query, _params, process, _options) do
+    IO.inspect query_meta
+    IO.inspect process
+    res = %Response{} = Prismic.Ecto.WorkerManager.execute(query)
+    {res.count, res.items}
   end
 
   # Commands invoked to prepare a query for all.
@@ -72,8 +72,7 @@ defmodule Prismic.Ecto do
   #
 
   @doc false
-  defmacro __before_compile__(_env),
-    do: []
+  defmacro __before_compile__(_env), do: []
 
   #
   # Writing to the API is unsupported

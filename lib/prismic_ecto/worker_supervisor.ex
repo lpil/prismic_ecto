@@ -6,8 +6,8 @@ defmodule Prismic.Ecto.WorkerSupervisor do
     Supervisor.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  def start_child(consumer, query) do
-    {:ok, _pid} = Supervisor.start_child(__MODULE__, [consumer, query])
+  def start_child(req) do
+    {:ok, _pid} = Supervisor.start_child(__MODULE__, [req])
     :ok
   end
 

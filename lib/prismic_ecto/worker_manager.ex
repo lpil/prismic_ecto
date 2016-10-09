@@ -1,6 +1,7 @@
 defmodule Prismic.Ecto.WorkerManager do
   @moduledoc false
   use GenServer
+  alias Prismic.Ecto.Request
 
   def start_link do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
@@ -15,7 +16,8 @@ defmodule Prismic.Ecto.WorkerManager do
   #
 
   def handle_call({:execute, query}, from, state) do
-    :ok = Prismic.Ecto.WorkerSupervisor.start_child(from, query)
+    req = %Request{ query: query, consumer: from }
+    :ok = Prismic.Ecto.WorkerSupervisor.start_child(req)
     {:noreply, state}
   end
 end

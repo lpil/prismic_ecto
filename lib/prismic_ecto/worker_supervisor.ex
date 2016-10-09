@@ -1,20 +1,22 @@
 defmodule Prismic.Ecto.WorkerSupervisor do
   @moduledoc false
+  use Supervisor
 
   def start_link do
-    import Supervisor.Spec, warn: false
-    worker_spec = [
-      worker(Prismic.Ecto.Worker, [], restart: :transient),
-    ]
-    options = [
-      strategy: :simple_one_for_one,
-      name: __MODULE__,
-    ]
-    Supervisor.start_link(worker_spec, options)
+    Supervisor.start_link(__MODULE__, [], name: __MODULE__)
   end
 
   def start_child(consumer, query) do
     {:ok, _pid} = Supervisor.start_child(__MODULE__, [consumer, query])
     :ok
+  end
+
+  #
+  # Callbacks
+  #
+
+  def init([]) do
+    child_spec = [worker(Prismic.Ecto.Worker, [], restart: :transient)]
+    supervise(child_spec, strategy: :simple_one_for_one)
   end
 end
